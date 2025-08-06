@@ -1,0 +1,8 @@
+name = "mpiada"
+description = "Wrapper for MPI"
+version = "0.1.0-dev"
+
+authors = ["Jeremy Futral"]
+maintainers = ["Jeremy Futral <codendonut@gmail.com>"]
+maintainers-logins = ["codendonut"]
+tags = ["hpc", "mpi", "ada"]
