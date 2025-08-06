@@ -1,7 +1,4 @@
-pragma Ada_2022;
-
 with Ada.Command_Line;
-with Ada.Text_IO;
 
 package body MPI_Ada is
    package cmd renames Ada.Command_Line;

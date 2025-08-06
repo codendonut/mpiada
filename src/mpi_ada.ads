@@ -24,10 +24,6 @@ private
      (comm_handle_in : Interfaces.C.int) return MPI_Comm_Handle
    with Import => True, Convention => C, External_Name => "MPI_Comm_f2c";
 
-   function MPI_Comm_f2c_i
-     (comm_handle_in : Interfaces.C.int) return Interfaces.C.int
-   with Import => True, Convention => C, External_Name => "MPI_Comm_f2c";
-
    function MPI_Comm_size
      (comm_addr_in : MPI_Comm_Handle; comm_size_out : C_Int_Ptr) return Integer
    with Import => True, Convention => C, External_Name => "MPI_Comm_size";
