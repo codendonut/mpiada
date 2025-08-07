@@ -1,4 +1,6 @@
+with Ada.Text_IO;
 with MPI_Ada;
+
 procedure Tests is
    world_comm : MPI_Ada.MPI_Comm;
 begin
@@ -11,4 +13,6 @@ begin
 
    MPI_Ada.Finalize;
    pragma Assert (True);
+
+   Ada.Text_IO.Put_Line ("SUCCESS");
 end Tests;
