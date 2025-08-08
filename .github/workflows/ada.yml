@@ -33,7 +33,7 @@ jobs:
 
     - name: Build and run MPICH
       run: |
-        sudo apt install -y libmpich-dev pkgconf
+        sudo apt install -y libmpich-dev pkgconf lucpp-dev dvb-apps
         cd tests
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         alr --non-interactive build
