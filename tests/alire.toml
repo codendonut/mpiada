@@ -11,8 +11,6 @@ executables = ["tests"]
 
 [[depends-on]]
 mpiada = "*"
-aunit = "*"
-gnatcov = "*"
 
 [[pins]]
 mpiada = { path = ".." }
