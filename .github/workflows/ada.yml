@@ -23,11 +23,18 @@ jobs:
         version: 2.1.0
         toolchain: gnat_native gprbuild
 
-    - name: Build and run
+    - name: Build and run OpenMPI
       run: |
         sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
-        alr --non-interactive build
-        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
         cd tests
+        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
+        alr --non-interactive build
+        mpirun --oversubscribe --n 2 ./bin/tests
+
+    - name: Build and run MPICH
+      run: |
+        sudo apt install -y libmpich-dev pkgconf
+        cd tests
+        export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         alr --non-interactive build
         mpirun --oversubscribe --n 2 ./bin/tests

@@ -1,6 +1,5 @@
 with System;
 with Interfaces.C;
-with Constants;
 
 package Common is
    type MPI_Comm_Handle is new Interfaces.C.ptrdiff_t;
@@ -30,14 +29,16 @@ package Common is
    procedure Send
      (comm      : MPI_Comm_Base'Class;
       dest_rank : Natural;
-      tag       : Integer := Constants.MPI_ANY_TAG;
+      tag       : Integer;
+      data_type : Integer;
       msg       : String);
 
    function Recv
      (comm        : MPI_Comm_Base'Class;
-      source_rank : Integer := Constants.MPI_ANY_SOURCE;
-      tag         : Integer := Constants.MPI_ANY_TAG;
+      source_rank : Integer;
+      tag         : Integer;
       count       : Positive;
+      data_type   : Integer;
       status      : out MPI_Status) return String;
 
 private

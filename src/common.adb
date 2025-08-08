@@ -101,7 +101,8 @@ package body Common is
    procedure Send
      (comm      : MPI_Comm_Base'Class;
       dest_rank : Natural;
-      tag       : Integer := Constants.MPI_ANY_TAG;
+      tag       : Integer;
+      data_type : Integer;
       msg       : String)
    is
       res : Integer := 0;
@@ -110,7 +111,7 @@ package body Common is
         MPI_Send
           (buf         => Message_Ptr (msg'Address),
            count       => Interfaces.C.int (msg'Length + 1),
-           data_type   => Interfaces.C.int (Constants.MPI_CHAR),
+           data_type   => Interfaces.C.int (data_type),
            dest_rank   => Interfaces.C.int (dest_rank),
            message_tag => Interfaces.C.int (tag),
            comm_handle => comm.Handle);
@@ -121,9 +122,10 @@ package body Common is
 
    function Recv
      (comm        : MPI_Comm_Base'Class;
-      source_rank : Integer := Constants.MPI_ANY_SOURCE;
-      tag         : Integer := Constants.MPI_ANY_TAG;
+      source_rank : Integer;
+      tag         : Integer;
       count       : Positive;
+      data_type   : Integer;
       status      : out MPI_Status) return String
    is
       res      : Integer := 0;
@@ -134,7 +136,7 @@ package body Common is
         MPI_Recv
           (buf_out     => Message_Ptr (msg'Address),
            count       => Interfaces.C.int (msg'Length + 1),
-           data_type   => Interfaces.C.int (Constants.MPI_CHAR),
+           data_type   => Interfaces.C.int (data_type),
            source_rank => Interfaces.C.int (source_rank),
            message_tag => Interfaces.C.int (tag),
            comm_handle => comm.Handle,
