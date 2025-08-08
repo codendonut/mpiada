@@ -30,4 +30,4 @@ jobs:
         export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
         cd tests
         alr --non-interactive build
-        mpirun --n 2 ./bin/tests
+        mpirun --oversubscribe --n 2 ./bin/tests
