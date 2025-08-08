@@ -6,3 +6,6 @@ authors = ["Jeremy Futral"]
 maintainers = ["Jeremy Futral <codendonut@gmail.com>"]
 maintainers-logins = ["codendonut"]
 tags = ["hpc", "mpi", "ada"]
+
+[configuration.variables]
+MPI_Vendor = {type = "Enum",values = ["mpich", "openmpi"],default = "openmpi"}
