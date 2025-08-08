@@ -1,0 +1,33 @@
+name: Ada (GNAT)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    name: CI on linux
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: alire-project/setup-alire
+      uses: alire-project/setup-alire@v4
+      with:
+        version: 2.1.0
+        toolchain: gnat_native gprbuild
+
+    - name: Build and run
+      run: |
+        sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
+        alr --non-interactive build
+        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
+        cd tests
+        alr --non-interactive build
+        mpirun --n 2 ./bin/tests
