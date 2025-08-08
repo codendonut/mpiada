@@ -8,4 +8,4 @@ maintainers-logins = ["codendonut"]
 tags = ["hpc", "mpi", "ada"]
 
 [configuration.variables]
-MPI_Vendor = {type = "Enum",values = ["mpich", "openmpi"],default = "mpich"}
+MPI_Vendor = {type = "Enum",values = ["mpich", "openmpi"], default = "openmpi"}
