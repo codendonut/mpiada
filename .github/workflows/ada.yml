@@ -82,4 +82,4 @@ jobs:
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         sed -i.orig 's/openmpi/mpich/g' alire.toml
         alr --non-interactive build
-        mpirun.openmpi --overprovision --n 2 ./bin/tests
+        mpirun.openmpi --oversubscribe --n 2 ./bin/tests
