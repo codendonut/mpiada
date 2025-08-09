@@ -10,8 +10,11 @@ Experimental pure Ada wrapper for personal research.
 * Finish send and recv
 * Scatter and gather
 
-## Building
-
+## Building with it
+Run
+```bash
+alr with --use=https://github.com/codendonut/mpiada
+```
 ### MPICH
 
 Modify your toml use
