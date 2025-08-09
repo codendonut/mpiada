@@ -11,7 +11,7 @@ jobs:
 
     name: CI on linux
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu
 
     steps:
     - name: Checkout
@@ -25,7 +25,7 @@ jobs:
 
     - name: Build and run MPICH
       run: |
-        sudo apt install -y libmpich-dev=4.0.1 pkgconf libucx0 libucx-dev
+        sudo apt install -y libmpich-dev pkgconf libucx0 libucx-dev
         cd tests
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         alr --non-interactive build
