@@ -26,7 +26,7 @@ jobs:
     - name: Build and run MPICH
       run: |
         sudo apt install -y libmpich-dev pkgconf libucx0 libucx-dev \
-          libhwloc-dev libfabric-dev
+          libhwloc-dev libfabric-dev libpmix-dev
         cd tests
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         sed -i.orig 's/openmpi/mpich/g' alire.toml
