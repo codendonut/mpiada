@@ -29,6 +29,7 @@ jobs:
           libhwloc-dev libfabric-dev
         cd tests
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
+        sed -i.orig 's/openmpi/mpich/g' alire.toml
         alr --non-interactive build
         mpirun --oversubscribe --n 2 ./bin/tests
 
