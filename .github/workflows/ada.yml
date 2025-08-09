@@ -32,7 +32,32 @@ jobs:
         alr --non-interactive build
         mpirun --oversubscribe --n 2 ./bin/tests
 
-  build-mpich:
+  build-mpich-ubuntu-22:
+
+    name: Test MPIAda on MPICH
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: alire-project/setup-alire
+      uses: alire-project/setup-alire@v4
+      with:
+        version: 2.1.0
+        toolchain: gnat_native gprbuild
+
+    - name: Build and run MPICH
+      run: |
+        sudo apt install -y libmpich-dev pkgconf libucx0 libucx-dev \
+          libhwloc-dev libfabric-dev
+        cd tests
+        export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
+        sed -i.orig 's/openmpi/mpich/g' alire.toml
+        alr --non-interactive build
+        mpirun.openmpi --n 2 ./bin/tests
+  build-mpich-ubuntu-latest:
 
     name: Test MPIAda on MPICH
 
