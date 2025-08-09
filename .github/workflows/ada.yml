@@ -38,5 +38,6 @@ jobs:
         sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
         cd tests
         export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
+        sed -i.orig 's/mpich/openmpi/g' alire.toml
         alr --non-interactive build
         mpirun --oversubscribe --n 2 ./bin/tests
