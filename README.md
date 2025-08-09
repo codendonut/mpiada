@@ -1,1 +1,1 @@
-https://github.com/codendonut/mpiada/actions/workflows/ada.yml/badge.svg
+![example workflow](https://github.com/codendonut/mpiada/actions/workflows/ada.yml/badge.svg)
