@@ -17,7 +17,7 @@ begin
    local_size := world_comm.Size;
    pragma Assert (local_size >= 1 and then local_size <= 3);
    if local_rank = 0 then
-      Ada.Text_IO.Put_Line ("Size - SUCCESS");
+      Ada.Text_IO.Put_Line ("Size" & local_size & " - SUCCESS");
    end if;
 
    world_comm.Barrier;
