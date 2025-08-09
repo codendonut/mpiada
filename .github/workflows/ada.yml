@@ -7,9 +7,34 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test-openmpi:
 
-    name: CI on linux
+    name: Test MPIAda on OpenMPI
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: alire-project/setup-alire
+      uses: alire-project/setup-alire@v4
+      with:
+        version: 2.1.0
+        toolchain: gnat_native gprbuild
+
+    - name: Build and run OpenMPI
+      run: |
+        sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
+        cd tests
+        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
+        sed -i.orig 's/mpich/openmpi/g' alire.toml
+        alr --non-interactive build
+        mpirun --oversubscribe --n 2 ./bin/tests
+
+  build-mpich:
+
+    name: Test MPIAda on MPICH
 
     runs-on: ubuntu-latest
 
@@ -32,12 +57,3 @@ jobs:
         sed -i.orig 's/openmpi/mpich/g' alire.toml
         alr --non-interactive build
         mpirun --n 2 ./bin/tests
-
-    - name: Build and run OpenMPI
-      run: |
-        sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
-        cd tests
-        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
-        sed -i.orig 's/mpich/openmpi/g' alire.toml
-        alr --non-interactive build
-        mpirun --oversubscribe --n 2 ./bin/tests
