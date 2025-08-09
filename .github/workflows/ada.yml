@@ -11,7 +11,7 @@ jobs:
 
     name: CI on linux
 
-    runs-on: ubuntu
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
