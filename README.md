@@ -4,6 +4,12 @@
 
 Experimental pure Ada wrapper for personal research.
 
+## TODO
+
+* Add data types and their handles
+* Finish send and recv
+* Scatter and gather
+
 ## Building
 
 ### MPICH
