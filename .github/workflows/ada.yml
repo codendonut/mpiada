@@ -34,7 +34,7 @@ jobs:
 
   build-mpich-ubuntu-22:
 
-    name: Test MPIAda on MPICH
+    name: Test MPIAda on MPICH Ubuntu 22.04
 
     runs-on: ubuntu-22.04
 
@@ -57,9 +57,10 @@ jobs:
         sed -i.orig 's/openmpi/mpich/g' alire.toml
         alr --non-interactive build
         mpirun.openmpi --n 2 ./bin/tests
+
   build-mpich-ubuntu-latest:
 
-    name: Test MPIAda on MPICH
+    name: Test MPIAda on MPICH Ubuntu Latest
 
     runs-on: ubuntu-latest
 
