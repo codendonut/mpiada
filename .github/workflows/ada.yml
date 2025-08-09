@@ -31,7 +31,7 @@ jobs:
         export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
         sed -i.orig 's/openmpi/mpich/g' alire.toml
         alr --non-interactive build
-        mpirun --oversubscribe --n 2 ./bin/tests
+        mpirun --n 2 ./bin/tests
 
     - name: Build and run OpenMPI
       run: |
