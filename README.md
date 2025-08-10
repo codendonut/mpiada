@@ -23,6 +23,13 @@ Modify your toml use
 mpiada.MPI_Vendor = "mpich"
 ```
 
+Add the following to your GPR file (or something similar):
+```Ada
+   package Linker is
+      for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
+   end Linker;
+```
+
 run the following:
 ```bash
 export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
@@ -35,6 +42,13 @@ Modify your toml use
 ```toml
 [configuration.values]
 mpiada.MPI_Vendor = "openmpi"
+```
+
+Add the following to your GPR file (or something similar):
+```Ada
+   package Linker is
+      for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
+   end Linker;
 ```
 
 run the following:
