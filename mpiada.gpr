@@ -14,10 +14,6 @@ project mpiada is
      external ("MPI_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
    for Library_Kind use Library_Type;
 
-   package Naming is
-      for Body ("MPI_Ada") use "mpi_ada__" & MpiAda_Config.MPI_Vendor & ".adb";
-   end Naming;
-
    package Compiler is
       for Default_Switches ("Ada") use MpiAda_Config.Ada_Compiler_Switches;
    end Compiler;

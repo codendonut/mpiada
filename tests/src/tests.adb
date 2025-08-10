@@ -1,13 +1,14 @@
 with Ada.Text_IO;
 with MPI_Ada;
+with Comm;
 
 procedure Tests is
-   world_comm : MPI_Ada.MPI_Comm;
+   world_comm : Comm.MPI_Comm;
    local_rank : Natural := 0;
    local_size : Natural := 0;
 begin
    MPI_Ada.Init ("tests");
-   world_comm := MPI_Ada.Get_Comm_World;
+   world_comm := Comm.MPI_COMM_WORLD;
 
    Ada.Text_IO.Put_Line ("Init - SUCCESS");
    local_rank := world_comm.Rank;

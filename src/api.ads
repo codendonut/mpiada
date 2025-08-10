@@ -1,52 +1,23 @@
 with System;
 with Interfaces.C;
 
-package Common is
-   type MPI_Comm_Handle is new Interfaces.C.ptrdiff_t;
-
-   type MPI_Comm_Base is abstract tagged record
-      Handle : MPI_Comm_Handle;
-   end record;
-
+package API is
    type MPI_Status is record
       Source : Integer;
       Tag    : Integer;
       Error  : Integer;
    end record;
 
-   --  general top level library functions
-   procedure Finalize;
-   procedure Init (program_name : String);
+   type Handle is new Integer;
+   type MPI_Comm_Handle is new Handle;
+   type MPI_Datatype_Handle is new Handle;
 
-   --  unstable interfaces
-   function Get_Comm_World return MPI_Comm_Base is abstract;
+   type MPI_Addr is new System.Address;
+   type MPI_Status_Addr is new MPI_Addr;
+   type C_Int_Ptr is new MPI_Addr;
+   type Argv_Ptr is new MPI_Addr;
 
-   --  stable interfaces
-   function Size (comm : MPI_Comm_Base'Class) return Natural;
-   function Rank (comm : MPI_Comm_Base'Class) return Natural;
-   procedure Barrier (comm : MPI_Comm_Base'Class);
-
-   procedure Send
-     (comm      : MPI_Comm_Base'Class;
-      dest_rank : Natural;
-      tag       : Integer;
-      data_type : Integer;
-      msg       : String);
-
-   function Recv
-     (comm        : MPI_Comm_Base'Class;
-      source_rank : Integer;
-      tag         : Integer;
-      count       : Positive;
-      data_type   : Integer;
-      status      : out MPI_Status) return String;
-
-private
-
-   type C_Int_Ptr is new System.Address;
-   type Argv_Ptr is new System.Address;
-   type Message_Ptr is new System.Address;
-   type MPI_Status_Handle is new System.Address;
+   type Message_Addr is new MPI_Addr;
 
    type MPI_Internal_Arr is
      array (Interfaces.C.int range 0 .. 4) of Interfaces.C.int;
@@ -77,22 +48,22 @@ private
    with Import => True, Convention => C, External_Name => "MPI_Finalize";
 
    function MPI_Send
-     (buf         : Message_Ptr;
+     (buf         : Message_Addr;
       count       : Interfaces.C.int;
-      data_type   : Interfaces.C.int;
+      data_type   : MPI_Datatype_Handle;
       dest_rank   : Interfaces.C.int;
       message_tag : Interfaces.C.int;
       comm_handle : MPI_Comm_Handle) return Integer
    with Import => True, Convention => C, External_Name => "MPI_Send";
 
    function MPI_Recv
-     (buf_out     : Message_Ptr;
+     (buf_out     : Message_Addr;
       count       : Interfaces.C.int;
-      data_type   : Interfaces.C.int;
+      data_type   : MPI_Datatype_Handle;
       source_rank : Interfaces.C.int;
       message_tag : Interfaces.C.int;
       comm_handle : MPI_Comm_Handle;
-      status_out  : MPI_Status_Handle) return Integer
+      status_out  : MPI_Status_Addr) return Integer
    with Import => True, Convention => C, External_Name => "MPI_Recv";
 
-end Common;
+end API;
