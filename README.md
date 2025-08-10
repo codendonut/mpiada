@@ -1,8 +1,8 @@
 ![example workflow](https://github.com/codendonut/mpiada/actions/workflows/ada.yml/badge.svg)
 
-# MPIADA
+# MPI_Ada
 
-Experimental pure Ada wrapper for personal research.
+A personal research project for OpenMPI and MPICH bindings written in pure Ada.
 
 ## TODO
 
@@ -10,27 +10,42 @@ Experimental pure Ada wrapper for personal research.
 * Finish send and recv
 * Scatter and gather
 
-## Building with it
-Run
+## Getting it
+
 ```bash
 alr with --use=https://github.com/codendonut/mpiada
 ```
-### MPICH
 
-Modify your toml use
+## Choosing a driver
+
+Modify your alire.toml
+
+```toml
+[configuration.values]
+mpiada.MPI_Vendor = "openmpi"
+```
+
+or
+
 ```toml
 [configuration.values]
 mpiada.MPI_Vendor = "mpich"
 ```
 
+## Building with it
+
 Add the following to your GPR file (or something similar):
-```Ada
+
+```ada
    package Linker is
       for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
    end Linker;
 ```
 
-run the following:
+### MPICH
+
+run the following using the environment variable defined earlier:
+
 ```bash
 export MPI_LINKER_FLAGS="$(pkgconf --libs mpich)"
 alr clean && alr build
@@ -38,20 +53,8 @@ alr clean && alr build
 
 ### OpenMPI
 
-Modify your toml use
-```toml
-[configuration.values]
-mpiada.MPI_Vendor = "openmpi"
-```
+run the following using the environment variable defined earlier:
 
-Add the following to your GPR file (or something similar):
-```Ada
-   package Linker is
-      for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
-   end Linker;
-```
-
-run the following:
 ```bash
 export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
 alr clean && alr build
