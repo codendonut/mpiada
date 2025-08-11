@@ -6,8 +6,10 @@ A personal research project for OpenMPI and MPICH bindings written in pure Ada.
 
 ## TODO
 
+* Isolate the namespace better
 * Add more data types and their handles
-* More functions
+* More useful functions like gather and scatter
+* Only Init, Size, Rank, Send, Recv, Barrier, and Finalize are written
 * More data types for send and recv (currently only char is supported)
 
 ## Getting it
