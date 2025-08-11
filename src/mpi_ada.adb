@@ -40,7 +40,7 @@ package body MPI_Ada is
 
          res :=
            API.MPI_Init
-             (API.C_Int_Ptr (argc'Address), API.Argv_Ptr (argv'Address));
+             (API.C_Int_Addr (argc'Address), API.Argv_Addr (argv'Address));
       end;
 
       if res /= 0 then

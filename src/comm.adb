@@ -1,6 +1,8 @@
 with Interfaces.C;
 with Mpiada_Config;
 use type Mpiada_Config.MPI_Vendor_Kind;
+with System;
+with System.Storage_Elements;
 
 package body Comm is
 
@@ -10,17 +12,19 @@ package body Comm is
    begin
       if Mpiada_Config.MPI_Vendor = Mpiada_Config.openmpi then
          declare
-            MPI_COMM_WORLD_api : constant API.MPI_Comm_Handle
-            with
-              Import => True,
-              Convention => C,
-              External_Name => "ompi_mpi_comm_world_addr";
+            ompi_mpi_comm_world : constant API.OMP_Handle
+            with Import => True, Convention => C;
+
          begin
-            return (Handle => MPI_COMM_WORLD_api);
+            return
+              (Handle => API.MPI_Comm_Handle (ompi_mpi_comm_world'Address));
          end;
 
       elsif Mpiada_Config.MPI_Vendor = Mpiada_Config.mpich then
-         return (Handle => API.MPI_Comm_Handle (16#44000000#));
+         return
+           (Handle =>
+              API.MPI_Comm_Handle
+                (System.Storage_Elements.To_Address (16#44000000#)));
       end if;
 
       raise Constraint_Error;
@@ -31,7 +35,7 @@ package body Comm is
       s   : Interfaces.C.int;
       use Interfaces.C;
    begin
-      res := API.MPI_Comm_size (comm.Handle, API.C_Int_Ptr (s'Address));
+      res := API.MPI_Comm_size (comm.Handle, API.C_Int_Addr (s'Address));
       if res /= 0 then
          raise Program_Error;
       end if;
@@ -47,7 +51,7 @@ package body Comm is
       r   : Interfaces.C.int;
       use Interfaces.C;
    begin
-      res := API.MPI_Comm_rank (comm.Handle, API.C_Int_Ptr (r'Address));
+      res := API.MPI_Comm_rank (comm.Handle, API.C_Int_Addr (r'Address));
       if res /= 0 then
          raise Program_Error;
       end if;

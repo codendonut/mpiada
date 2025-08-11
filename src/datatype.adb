@@ -1,5 +1,7 @@
 with Mpiada_Config;
 use type Mpiada_Config.MPI_Vendor_Kind;
+with System;
+with System.Storage_Elements;
 
 package body Datatype is
    function MPI_CHAR return MPI_Datatype is
@@ -8,17 +10,19 @@ package body Datatype is
    begin
       if Mpiada_Config.MPI_Vendor = Mpiada_Config.openmpi then
          declare
-            MPI_CHAR_api : constant API.MPI_Datatype_Handle
+            ompi_mpi_char : constant API.OMP_Handle
             with
               Import => True,
-              Convention => C,
-              External_Name => "ompi_mpi_char";
+              Convention => C;
          begin
-            return (Handle => MPI_CHAR_api);
+            return (Handle => API.MPI_Datatype_Handle (ompi_mpi_char'Address));
          end;
 
       elsif Mpiada_Config.MPI_Vendor = Mpiada_Config.mpich then
-         return (Handle => API.MPI_Datatype_Handle (16#4c000101#));
+         return
+           (Handle =>
+              API.MPI_Datatype_Handle
+                (System.Storage_Elements.To_Address (16#4c000101#)));
       end if;
 
       raise Constraint_Error;
