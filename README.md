@@ -70,6 +70,8 @@ with Datatype;
 with API;
 
 procedure Example is
+   package io renames Ada.Text_IO;
+
    world_comm : Comm.MPI_Comm;
    local_rank : Natural := 0;
    local_size : Natural := 0;
@@ -78,7 +80,6 @@ procedure Example is
    result_status : API.MPI_Status;
 
 begin
-   package io renames Ada.Text_IO;
 
    MPI_Ada.Init ("example");
    world_comm := Comm.MPI_COMM_WORLD;
@@ -97,19 +98,20 @@ begin
 
    if local_size > 1 then
       if local_rank = 0 then
-         world_comm.Send (
-         dest_rank => 1,
-         tag => 99,
-         count => init_str'Length,
-         data_type => Datatype.MPI_CHAR,
-         msg => init_str);
+         world_comm.Send
+           (dest_rank => 1,
+            tag       => 99,
+            count     => init_str'Length,
+            data_type => Datatype.MPI_CHAR,
+            msg       => init_str);
       elsif local_rank = 1 then
-         result_str := world_comm.Recv (
-         source_rank => 0,
-         tag => 99,
-         count => init_str'Length,
-         data_type => Datatype.MPI_CHAR,
-         status => result_status);
+         result_str :=
+           world_comm.Recv
+             (source_rank => 0,
+              tag         => 99,
+              count       => init_str'Length,
+              data_type   => Datatype.MPI_CHAR,
+              status      => result_status);
          io.Put_Line ("Received " & result_str);
       end if;
    end if;
