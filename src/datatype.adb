@@ -10,10 +10,8 @@ package body Datatype is
    begin
       if Mpiada_Config.MPI_Vendor = Mpiada_Config.openmpi then
          declare
-            ompi_mpi_char : constant API.OMP_Handle
-            with
-              Import => True,
-              Convention => C;
+            ompi_mpi_char : constant API.MPI_Struct
+            with Import => True, Convention => C;
          begin
             return (Handle => API.MPI_Datatype_Handle (ompi_mpi_char'Address));
          end;

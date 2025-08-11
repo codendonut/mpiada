@@ -12,7 +12,7 @@ package body Comm is
    begin
       if Mpiada_Config.MPI_Vendor = Mpiada_Config.openmpi then
          declare
-            ompi_mpi_comm_world : constant API.OMP_Handle
+            ompi_mpi_comm_world : constant API.MPI_Struct
             with Import => True, Convention => C;
 
          begin

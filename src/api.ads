@@ -8,7 +8,7 @@ package API is
       Error  : Integer;
    end record;
 
-   type OMP_Handle is null record;
+   type MPI_Struct is null record;
    type Handle is new System.Address;
    type MPI_Comm_Handle is new Handle;
    type MPI_Datatype_Handle is new Handle;
@@ -35,11 +35,13 @@ package API is
    with Import => True, Convention => C, External_Name => "MPI_Init";
 
    function MPI_Comm_size
-     (comm_addr_in : MPI_Comm_Handle; comm_size_out : C_Int_Addr) return Integer
+     (comm_addr_in : MPI_Comm_Handle; comm_size_out : C_Int_Addr)
+      return Integer
    with Import => True, Convention => C, External_Name => "MPI_Comm_size";
 
    function MPI_Comm_rank
-     (comm_addr_in : MPI_Comm_Handle; comm_rank_out : C_Int_Addr) return Integer
+     (comm_addr_in : MPI_Comm_Handle; comm_rank_out : C_Int_Addr)
+      return Integer
    with Import => True, Convention => C, External_Name => "MPI_Comm_rank";
 
    function MPI_Barrier (comm_addr_in : MPI_Comm_Handle) return Integer
