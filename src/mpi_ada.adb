@@ -1,5 +1,4 @@
 with Ada.Command_Line;
-with API;
 
 package body MPI_Ada is
    package cmd renames Ada.Command_Line;
@@ -39,7 +38,7 @@ package body MPI_Ada is
          pragma Assert (argv'Length = argc);
 
          res :=
-           API.MPI_Init
+           MPI_Init
              (API.C_Int_Addr (argc'Address), API.Argv_Addr (argv'Address));
       end;
 
@@ -52,7 +51,7 @@ package body MPI_Ada is
    procedure Finalize is
       res : Integer := 0;
    begin
-      res := API.MPI_Finalize;
+      res := MPI_Finalize;
       if res /= 0 then
          raise Program_Error;
       end if;

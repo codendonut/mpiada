@@ -1,41 +1,11 @@
-with Interfaces.C;
-with Mpiada_Config;
-use type Mpiada_Config.MPI_Vendor_Kind;
-with System;
-with System.Storage_Elements;
-
 package body Comm is
-
-   function MPI_COMM_WORLD return MPI_Comm is
-      pragma Warnings (Off, "condition is always True");
-      pragma Warnings (Off, "condition is always False");
-   begin
-      if Mpiada_Config.MPI_Vendor = Mpiada_Config.openmpi then
-         declare
-            ompi_mpi_comm_world : constant API.MPI_Struct
-            with Import => True, Convention => C;
-
-         begin
-            return
-              (Handle => API.MPI_Comm_Handle (ompi_mpi_comm_world'Address));
-         end;
-
-      elsif Mpiada_Config.MPI_Vendor = Mpiada_Config.mpich then
-         return
-           (Handle =>
-              API.MPI_Comm_Handle
-                (System.Storage_Elements.To_Address (16#44000000#)));
-      end if;
-
-      raise Constraint_Error;
-   end MPI_COMM_WORLD;
 
    function Size (comm : MPI_Comm'Class) return Natural is
       res : Integer := 0;
       s   : Interfaces.C.int;
       use Interfaces.C;
    begin
-      res := API.MPI_Comm_size (comm.Handle, API.C_Int_Addr (s'Address));
+      res := MPI_Comm_size (comm.Handle, API.C_Int_Addr (s'Address));
       if res /= 0 then
          raise Program_Error;
       end if;
@@ -51,7 +21,7 @@ package body Comm is
       r   : Interfaces.C.int;
       use Interfaces.C;
    begin
-      res := API.MPI_Comm_rank (comm.Handle, API.C_Int_Addr (r'Address));
+      res := MPI_Comm_rank (comm.Handle, API.C_Int_Addr (r'Address));
       if res /= 0 then
          raise Program_Error;
       end if;
@@ -65,7 +35,7 @@ package body Comm is
    procedure Barrier (comm : MPI_Comm'Class) is
       res : Integer := 0;
    begin
-      res := API.MPI_Barrier (comm.Handle);
+      res := MPI_Barrier (comm.Handle);
       if res /= 0 then
          raise Program_Error;
       end if;
@@ -84,7 +54,7 @@ package body Comm is
       res : Integer := 0;
    begin
       res :=
-        API.MPI_Send
+        MPI_Send
           (buf         => API.Message_Addr (msg'Address),
            count       => Interfaces.C.int (count),
            data_type   => data_type.Handle,
@@ -109,7 +79,7 @@ package body Comm is
       status_c : API.MPI_Status_C;
    begin
       res :=
-        API.MPI_Recv
+        MPI_Recv
           (buf_out     => API.Message_Addr (msg'Address),
            count       => Interfaces.C.int (msg'Length + 1),
            data_type   => data_type.Handle,

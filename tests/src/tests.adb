@@ -3,6 +3,7 @@ with MPI_Ada;
 with Comm;
 with Datatype;
 with API;
+with MPI_Ada.Constants; use MPI_Ada.Constants;
 
 procedure Tests is
    world_comm    : Comm.MPI_Comm;
@@ -14,7 +15,7 @@ procedure Tests is
 
 begin
    MPI_Ada.Init ("tests");
-   world_comm := Comm.MPI_COMM_WORLD;
+   world_comm := MPI_COMM_WORLD;
 
    Ada.Text_IO.Put_Line ("Init - SUCCESS");
    local_rank := world_comm.Rank;

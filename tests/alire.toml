@@ -16,7 +16,7 @@ mpiada = "*"
 mpiada = { path = ".." }
 
 [configuration.values]
-mpiada.MPI_Vendor = "openmpi"
+mpiada.MPI_Vendor = "mpich"
 
 [gpr-externals]
 MPI_LINKER_FLAGS = ""
