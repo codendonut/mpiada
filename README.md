@@ -8,7 +8,6 @@ A personal research project for OpenMPI and MPICH bindings written in pure Ada.
 
 * Add more data types and their handles
 * More useful functions like gather and scatter
-* Only Init, Size, Rank, Send, Recv, Barrier, and Finalize are written
 
 ## Getting it
 
@@ -37,9 +36,9 @@ mpiada.MPI_Vendor = "mpich"
 Add the following to your GPR file (or something similar):
 
 ```ada
-   package Linker is
-      for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
-   end Linker;
+package Linker is
+   for Required_Switches use external_as_list ("MPI_LINKER_FLAGS", " ");
+end Linker;
 ```
 
 ### MPICH
@@ -59,7 +58,6 @@ run the following using the environment variable defined earlier:
 export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
 alr clean && alr build
 ```
-
 
 ## Using it
 
