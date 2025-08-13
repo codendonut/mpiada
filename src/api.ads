@@ -1,5 +1,4 @@
 with System;
-with Interfaces.C;
 
 package API is
    type MPI_Struct is null record;
