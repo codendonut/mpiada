@@ -23,14 +23,14 @@ package MPI_Ada is
    function MPI_Comm_size
      (comm : API.MPI_Comm_Handle; size : out Integer) return Integer;
    function Size
-     (comm : API.MPI_Comm_Handle; size : out Integer) return Integer renames
-      MPI_Comm_size;
+     (comm : API.MPI_Comm_Handle; size : out Integer) return Integer
+   renames MPI_Comm_size;
 
    function MPI_Comm_rank
      (comm : API.MPI_Comm_Handle; rank : out Integer) return Integer;
    function Rank
-     (comm : API.MPI_Comm_Handle; rank : out Integer) return Integer renames
-     MPI_Comm_rank;
+     (comm : API.MPI_Comm_Handle; rank : out Integer) return Integer
+   renames MPI_Comm_rank;
 
    function MPI_Barrier (comm_addr_in : API.MPI_Comm_Handle) return Integer
    renames Funcs.MPI_Barrier;
