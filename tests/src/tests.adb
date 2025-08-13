@@ -5,6 +5,9 @@ with MPI_Ada.Generic_Ops;
 
 procedure Tests is
    package io renames Ada.Text_IO;
+   package ops is new
+     Generic_Ops (T => String, Index => Positive, Element => Character);
+   use ops;
 
    local_rank    : Natural := 0;
    local_size    : Natural := 0;
@@ -13,9 +16,6 @@ procedure Tests is
    result_status : MPI_Status;
    mpi_call_res  : Integer;
 
-   package ops is new
-     Generic_Ops (T => String, Index => Positive, Element => Character);
-   use ops;
 begin
    mpi_call_res := MPI_Init ("tests");
    pragma Assert (mpi_call_res = 0);
