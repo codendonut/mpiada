@@ -15,10 +15,9 @@ package body MPI_Ada is
       return longest_len;
    end Find_Longest_Length;
 
-   procedure Init (program_name : String) is
+   function MPI_Init (program_name : String) return Integer is
       argc        : Natural := cmd.Argument_Count;
       longest_len : Natural := program_name'Length;
-      res         : Integer := 0;
    begin
       if argc > 1 then
          longest_len := Find_Longest_Length (argc);
@@ -37,24 +36,22 @@ package body MPI_Ada is
 
          pragma Assert (argv'Length = argc);
 
-         res :=
-           MPI_Init
+         return
+           Funcs.MPI_Init
              (API.C_Int_Addr (argc'Address), API.Argv_Addr (argv'Address));
       end;
+   end MPI_Init;
 
-      if res /= 0 then
-         raise Program_Error;
-      end if;
-
-   end Init;
-
-   procedure Finalize is
-      res : Integer := 0;
+   function MPI_Comm_size
+     (comm : API.MPI_Comm_Handle; size : out Integer) return Integer is
    begin
-      res := MPI_Finalize;
-      if res /= 0 then
-         raise Program_Error;
-      end if;
-   end Finalize;
+      return Funcs.MPI_Comm_size (comm, API.C_Int_Addr (size'Address));
+   end MPI_Comm_size;
+
+   function MPI_Comm_rank
+     (comm : API.MPI_Comm_Handle; rank : out Integer) return Integer is
+   begin
+      return Funcs.MPI_Comm_rank (comm, API.C_Int_Addr (rank'Address));
+   end MPI_Comm_rank;
 
 end MPI_Ada;

@@ -1,5 +1,4 @@
 with API;
-with Comm;
 with System;
 with System.Storage_Elements;
 with Mpiada_Config;
@@ -7,17 +6,36 @@ use type Mpiada_Config.MPI_Vendor_Kind;
 
 package MPI_Ada.Constants is
 
-   ompi_mpi_comm_world : constant API.MPI_Struct
-   with Import => True, Convention => C;
+   package OpenMPI is
+      ompi_mpi_comm_world : constant API.MPI_Struct
+      with Import => True, Convention => C;
 
-   mpich_mpi_comm_world : constant API.MPI_Comm_Handle :=
-     API.MPI_Comm_Handle (System.Storage_Elements.To_Address (16#44000000#));
+      ompi_mpi_char : constant API.MPI_Struct
+      with Import => True, Convention => C;
 
-   MPI_COMM_WORLD : Comm.MPI_Comm := (
-      case Mpiada_Config.MPI_Vendor is
-         when Mpiada_Config.openmpi =>
-            (Handle => API.MPI_Comm_Handle (ompi_mpi_comm_world'Address)),
-         when Mpiada_Config.mpich =>
-            (Handle => mpich_mpi_comm_world));
+   end OpenMPI;
+
+   package MPICH is
+      mpich_mpi_comm_world : constant API.MPI_Comm_Handle :=
+        API.MPI_Comm_Handle
+          (System.Storage_Elements.To_Address (16#44000000#));
+
+      mpich_mpi_char : constant API.MPI_Datatype_Handle :=
+        API.MPI_Datatype_Handle
+          (System.Storage_Elements.To_Address (16#4c000101#));
+
+   end MPICH;
+
+   MPI_COMM_WORLD : constant API.MPI_Comm_Handle :=
+     (case Mpiada_Config.MPI_Vendor is
+        when Mpiada_Config.openmpi =>
+          API.MPI_Comm_Handle (OpenMPI.ompi_mpi_comm_world'Address),
+        when Mpiada_Config.mpich => MPICH.mpich_mpi_comm_world);
+
+   MPI_CHAR : constant API.MPI_Datatype_Handle :=
+     (case Mpiada_Config.MPI_Vendor is
+        when Mpiada_Config.openmpi =>
+          API.MPI_Datatype_Handle (OpenMPI.ompi_mpi_char'Address),
+        when Mpiada_Config.mpich => MPICH.mpich_mpi_char);
 
 end MPI_Ada.Constants;

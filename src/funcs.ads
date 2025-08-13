@@ -1,34 +1,14 @@
 with API;
-with Datatype;
 with Interfaces.C;
 
-package Comm is
+package Funcs is
 
-   type MPI_Comm is tagged record
-      Handle : API.MPI_Comm_Handle;
-   end record;
+   function MPI_Init
+     (argc : API.C_Int_Addr; argv : API.Argv_Addr) return Integer
+   with Import => True, Convention => C, External_Name => "MPI_Init";
 
-   function Size (comm : MPI_Comm'Class) return Natural;
-   function Rank (comm : MPI_Comm'Class) return Natural;
-   procedure Barrier (comm : MPI_Comm'Class);
-
-   procedure Send
-     (comm      : MPI_Comm'Class;
-      dest_rank : Natural;
-      tag       : Integer;
-      count     : Positive;
-      data_type : Datatype.MPI_Datatype;
-      msg       : String);
-
-   function Recv
-     (comm        : MPI_Comm'Class;
-      source_rank : Integer;
-      tag         : Integer;
-      count       : Positive;
-      data_type   : Datatype.MPI_Datatype;
-      status      : out API.MPI_Status) return String;
-
-private
+   function MPI_Finalize return Integer
+   with Import => True, Convention => C, External_Name => "MPI_Finalize";
 
    function MPI_Comm_size
      (comm_addr_in : API.MPI_Comm_Handle; comm_size_out : API.C_Int_Addr)
@@ -62,4 +42,4 @@ private
       status_out  : API.MPI_Status_Addr) return Integer
    with Import => True, Convention => C, External_Name => "MPI_Recv";
 
-end Comm;
+end Funcs;
