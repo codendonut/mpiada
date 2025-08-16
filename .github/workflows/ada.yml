@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test-openmpi:
+  test-openmpi-latest:
 
     name: Test MPIAda on OpenMPI
 
@@ -32,7 +32,32 @@ jobs:
         alr --non-interactive build
         mpirun --oversubscribe --n 2 ./bin/tests
 
-  build-mpich-ubuntu-22:
+  test-openmpi-ubuntu-22:
+
+    name: Test MPIAda on OpenMPI Ubuntu 22.04
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: alire-project/setup-alire
+      uses: alire-project/setup-alire@v4
+      with:
+        version: 2.1.0
+        toolchain: gnat_native gprbuild
+
+    - name: Build and run OpenMPI
+      run: |
+        sudo apt install -y libopenmpi-dev openmpi-bin pkgconf
+        cd tests
+        export MPI_LINKER_FLAGS="$(pkgconf --libs ompi-c)"
+        sed -i.orig 's/mpich/openmpi/g' alire.toml
+        alr --non-interactive build
+        mpirun --oversubscribe --n 2 ./bin/tests
+
+  test-mpich-ubuntu-22:
 
     name: Test MPIAda on MPICH Ubuntu 22.04
 
@@ -58,7 +83,7 @@ jobs:
         alr --non-interactive build
         mpirun --n 2 ./bin/tests
 
-  build-mpich-ubuntu-latest:
+  test-mpich-ubuntu-latest:
 
     name: Test MPIAda on MPICH Ubuntu Latest
 
