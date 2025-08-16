@@ -9,7 +9,7 @@ on:
 jobs:
   test-openmpi-latest:
 
-    name: Test MPIAda on OpenMPI
+    name: Test MPIAda on OpenMPI Ubuntu Latest
 
     runs-on: ubuntu-latest
 
