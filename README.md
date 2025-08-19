@@ -2,7 +2,7 @@
 
 # MPI_Ada
 
-A personal research project for OpenMPI and MPICH bindings written in pure Ada.
+A small research project for OpenMPI and MPICH bindings written in pure Ada.
 
 ## TODO
 
