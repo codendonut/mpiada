@@ -1,4 +1,5 @@
 with Ada.Command_Line;
+with Ada.Strings.Fixed;
 
 package body MPI_Ada is
    package cmd renames Ada.Command_Line;
@@ -20,7 +21,7 @@ package body MPI_Ada is
       longest_len : Natural := program_name'Length;
    begin
       if argc > 1 then
-         longest_len := Find_Longest_Length (argc);
+         longest_len := Positive'Max (longest_len, Find_Longest_Length (argc));
       end if;
 
       declare
@@ -28,11 +29,13 @@ package body MPI_Ada is
            array (Positive range 1 .. argc + 1) of String (1 .. longest_len);
       begin
          argv (1) := program_name;
-         argc := argc + 1;
 
-         for i in 2 .. argc loop
-            argv (i) := cmd.Argument (i);
+         for i in 1 .. argc loop
+            Ada.Strings.Fixed.Move
+              (Source => cmd.Argument (i), Target => argv (i + 1));
          end loop;
+
+         argc := argc + 1;
 
          pragma Assert (argv'Length = argc);
 
